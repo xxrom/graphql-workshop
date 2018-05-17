@@ -30,3 +30,8 @@ Temporary Items
 
 
 # End of https://www.gitignore.io/api/osx
+node_modules/
+npm-debug.log
+yarn-error.log
+build/
+.DS_Store

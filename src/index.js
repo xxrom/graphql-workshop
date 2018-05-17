@@ -2,8 +2,14 @@ const { GraphQLServer } = require("graphql-yoga");
 
 const postData = [
   {
-    id: "post-0",
-    title: "",
+    id: 1,
+    title: "post1",
+    content: "",
+    published: false
+  },
+  {
+    id: 2,
+    title: "post2",
     content: "",
     published: false
   }
@@ -20,13 +26,28 @@ const typeDefs = `
   type Query {
     info: String!
     posts: [Post!]!
+    post(id: ID!): Post # можно вместо ID написать Int
   }
 `;
+
+// query {
+//   post(id: 2) {
+//     title
+//   }
+// }
 
 const resolvers = {
   Query: {
     info: () => `This is the API for a simple blogging application.`,
-    posts: () => postData
+    posts: () => postData,
+    post: (_, args, context) => { // context = { id: '1' } // глобальная переменная для передачи
+      // context = conext.push({ id: '122' });
+
+      console.log(args);
+      // console.log(context);
+      const { id } = args;
+      return postData.find(p => p.id === Number(id));
+    }
   }
 };
 

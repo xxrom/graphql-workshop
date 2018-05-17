@@ -1,13 +1,13 @@
 const { GraphQLServer } = require('graphql-yoga')
 
-const postData = [
+let postData = [
   {
-    id: 'post-0',
+    id: 1,
     title: '',
     content: '',
-    published: false,
-  },
-]
+    published: false
+  }
+];
 
 const typeDefs = `
 type Post {
@@ -22,9 +22,43 @@ type Query {
   posts(searchString: String): [Post!]!
   post(id: ID!): Post
 }
+
+input CreatePostInput { # не разрешает циклические зависимости
+  id: Int!
+  title: String!
+  content: String!
+}
+
+type Mutation {
+  createPost(input: CreatePostInput): Post!
+}
 `
 
+// mutation {
+//   createPost(input: {
+//     id: 1,
+//     title: "new post",
+//     content: "hello world"
+//   }) {
+//     id
+//   }
+// }
+
+
 const resolvers = {
+  Mutation: {
+    createPost: (_, args) => {
+      const { input: { title, content, id }} = args;
+      const newPost = {
+        id,
+        title,
+        content,
+        publish: false
+      };
+      postData.push(newPost);
+      return newPost;
+    }
+  },
   Query: {
     info: () => `This is the API for a simple blogging application.`,
     posts: (_, args) => {

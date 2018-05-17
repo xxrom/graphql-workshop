@@ -5,9 +5,15 @@
   "author": "Nikolas Burk <nikolas.burk@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "update-prisma-sdl": "graphql get-schema --project prisma",
+    "prisma-sunc": "yarn graphql get-schema --project prisma"
   },
   "dependencies": {
-    "graphql-yoga": "^1.13.1"
+    "graphql-yoga": "^1.13.1",
+    "prisma-binding": "^2.0.0"
+  },
+  "devDependencies": {
+    "graphql-cli": "^2.16.0"
   }
 }
